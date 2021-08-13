@@ -2,6 +2,7 @@ using AutoMapper;
 using MovieStore.Application.ActorOperations.Commands.CreateActor;
 using MovieStore.Application.ActorOperations.Queries.GetActorById;
 using MovieStore.Application.ActorOperations.Queries.GetActors;
+using MovieStore.Application.CustomerOperations.Commands.CreateCustomer;
 using MovieStore.Application.DirectorOperations.Commands.CreateDirector;
 using MovieStore.Application.DirectorOperations.Queries.GetDirectorById;
 using MovieStore.Application.DirectorOperations.Queries.GetDirectors;
@@ -11,7 +12,7 @@ using MovieStore.Application.MovieOperations.Queries.GetMovies;
 using MovieStore.Common;
 using MovieStore.Entities;
 
-namespace BookStore.Common
+namespace MovieStore.Common
 {
   public class MappingProfile : Profile
   {
@@ -26,6 +27,7 @@ namespace BookStore.Common
       CreateMap<Director, DirectorsViewModel>();
       CreateMap<Director, GetDirectorByIdViewModel>();
       CreateMap<CreateDirectorModel, Director>();
+      CreateMap<CreateCustomerModel, Customer>();
     }
   }
 }

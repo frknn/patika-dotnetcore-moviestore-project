@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using AutoMapper;
 using FluentValidation;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MovieStore.Application.ActorOperations.Commands.CreateActor;
 using MovieStore.Application.ActorOperations.Commands.DeleteActor;
@@ -11,6 +12,7 @@ using MovieStore.DBOperations;
 
 namespace MovieStore.Controllers
 {
+  [Authorize]
   [ApiController]
   [Route("[Controller]s")]
   public class ActorController : ControllerBase

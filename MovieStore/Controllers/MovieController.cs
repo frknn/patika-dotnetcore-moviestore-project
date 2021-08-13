@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using AutoMapper;
 using FluentValidation;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MovieStore.Application.BookOperations.Queries.GetBookById;
 using MovieStore.Application.MovieOperations.Commands.CreateMovie;
@@ -12,6 +13,7 @@ using MovieStore.DBOperations;
 
 namespace MovieStore.Controllers
 {
+  [Authorize]
   [ApiController]
   [Route("[Controller]s")]
   public class MovieController : ControllerBase
