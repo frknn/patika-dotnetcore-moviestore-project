@@ -12,5 +12,6 @@ namespace MovieStore.Entities
     public int? DirectorId { get; set; }
     public Director Director { get; set; }
     public int Price { get; set; }
+    public bool isActive { get; set; } = true;
   }
 }

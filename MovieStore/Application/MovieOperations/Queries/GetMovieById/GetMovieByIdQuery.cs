@@ -20,7 +20,7 @@ namespace MovieStore.Application.MovieOperations.Queries.GetMovieById
 
     public GetMovieByIdViewModel Handle()
     {
-      Movie movie = _dbContext.Movies.Where(movie => movie.Id == Id).SingleOrDefault();
+      Movie movie = _dbContext.Movies.Where(movie => movie.Id == Id && movie.isActive).SingleOrDefault();
       if (movie is null)
       {
         throw new InvalidOperationException("Film bulunamadı.");

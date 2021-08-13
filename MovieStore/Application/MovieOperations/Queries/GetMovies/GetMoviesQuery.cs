@@ -19,7 +19,7 @@ namespace MovieStore.Application.MovieOperations.Queries.GetMovies
 
     public List<MoviesViewModel> Handle()
     {
-      List<Movie> movies = _dbContext.Movies.OrderBy(movie => movie.Id).ToList<Movie>();
+      List<Movie> movies = _dbContext.Movies.Where(movie => movie.isActive).OrderBy(movie => movie.Id).ToList<Movie>();
       List<MoviesViewModel> moviesVM = _mapper.Map<List<MoviesViewModel>>(movies);
       return moviesVM;
     }
