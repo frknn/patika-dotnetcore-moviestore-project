@@ -12,7 +12,6 @@ using MovieStore.DBOperations;
 
 namespace MovieStore.Controllers
 {
-  [Authorize]
   [ApiController]
   [Route("[Controller]s")]
   public class ActorController : ControllerBase

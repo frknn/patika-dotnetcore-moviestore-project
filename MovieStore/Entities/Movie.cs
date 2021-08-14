@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MovieStore.Entities
@@ -11,6 +12,7 @@ namespace MovieStore.Entities
     public int GenreId { get; set; }
     public int? DirectorId { get; set; }
     public Director Director { get; set; }
+    public List<Actor> Actors { get; set; }
     public int Price { get; set; }
     public bool isActive { get; set; } = true;
   }

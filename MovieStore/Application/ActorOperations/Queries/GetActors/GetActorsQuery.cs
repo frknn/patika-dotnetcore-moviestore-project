@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using MovieStore.DBOperations;
 using MovieStore.Entities;
 
@@ -19,7 +20,7 @@ namespace MovieStore.Application.ActorOperations.Queries.GetActors
 
     public List<ActorsViewModel> Handle()
     {
-      List<Actor> actors = _dbContext.Actors.OrderBy(actor => actor.Id).ToList<Actor>();
+      List<Actor> actors = _dbContext.Actors.Include(actor => actor.Movies).ThenInclude(movie => movie.Director).OrderBy(actor => actor.Id).ToList<Actor>();
       List<ActorsViewModel> actorsVM = _mapper.Map<List<ActorsViewModel>>(actors);
       return actorsVM;
     }
@@ -29,5 +30,14 @@ namespace MovieStore.Application.ActorOperations.Queries.GetActors
   {
     public string FirstName { get; set; }
     public string LastName { get; set; }
+    public List<ActedInMovieViewModel> Movies { get; set; }
+  }
+
+  public class ActedInMovieViewModel
+  {
+    public string Name { get; set; }
+    public int ReleaseYear { get; set; }
+    public string Genre { get; set; }
+    public string Director { get; set; }
   }
 }

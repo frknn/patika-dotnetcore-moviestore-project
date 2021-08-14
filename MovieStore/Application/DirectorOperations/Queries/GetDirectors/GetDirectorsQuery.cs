@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using MovieStore.DBOperations;
 using MovieStore.Entities;
 
@@ -19,7 +20,7 @@ namespace MovieStore.Application.DirectorOperations.Queries.GetDirectors
 
     public List<DirectorsViewModel> Handle()
     {
-      List<Director> directors = _dbContext.Directors.OrderBy(director => director.Id).ToList<Director>();
+      List<Director> directors = _dbContext.Directors.Include(director => director.DirectedMovies).OrderBy(director => director.Id).ToList<Director>();
       List<DirectorsViewModel> directorsVM = _mapper.Map<List<DirectorsViewModel>>(directors);
       return directorsVM;
     }
@@ -29,5 +30,13 @@ namespace MovieStore.Application.DirectorOperations.Queries.GetDirectors
   {
     public string FirstName { get; set; }
     public string LastName { get; set; }
+    public List<DirectedMovieViewModel> DirectedMovies { get; set; }
+  }
+
+  public class DirectedMovieViewModel
+  {
+    public string Name { get; set; }
+    public int ReleaseYear { get; set; }
+    public string Genre { get; set; }
   }
 }

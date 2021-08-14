@@ -18,16 +18,26 @@ namespace MovieStore.Common
   {
     public MappingProfile()
     {
-      CreateMap<Movie, MoviesViewModel>().ForMember(dest => dest.Genre, opt => opt.MapFrom(src => (GenreEnum)src.GenreId));
+      CreateMap<Movie, MoviesViewModel>()
+        .ForMember(dest => dest.Genre, opt => opt.MapFrom(src => (GenreEnum)src.GenreId))
+        .ForMember(dest => dest.Director, opt => opt.MapFrom(src => src.Director.FirstName + " " + src.Director.LastName));
+
       CreateMap<Movie, GetMovieByIdViewModel>().ForMember(dest => dest.Genre, opt => opt.MapFrom(src => (GenreEnum)src.GenreId));
       CreateMap<CreateMovieModel, Movie>();
       CreateMap<Actor, ActorsViewModel>();
       CreateMap<Actor, GetActorByIdViewModel>();
       CreateMap<CreateActorModel, Actor>();
       CreateMap<Director, DirectorsViewModel>();
+      CreateMap<Movie, DirectedMovieViewModel>()
+        .ForMember(dest => dest.Genre, opt => opt.MapFrom(src => (GenreEnum)src.GenreId));
+      CreateMap<Movie, ActedInMovieViewModel>()
+        .ForMember(dest => dest.Genre, opt => opt.MapFrom(src => (GenreEnum)src.GenreId))
+        .ForMember(dest => dest.Director, opt => opt.MapFrom(src => src.Director.FirstName + " " + src.Director.LastName));
       CreateMap<Director, GetDirectorByIdViewModel>();
       CreateMap<CreateDirectorModel, Director>();
-      CreateMap<CreateCustomerModel, Customer>();
+      CreateMap<CreateCustomerModel, Customer>().ForMember(dest => dest.Password, opt => opt.MapFrom(src => BCrypt.Net.BCrypt.HashPassword(src.Password)));
+      CreateMap<Actor, ActorViewModel>()
+        .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.FirstName + " " + src.LastName));
     }
   }
 }

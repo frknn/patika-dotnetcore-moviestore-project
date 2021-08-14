@@ -23,8 +23,9 @@ namespace MovieStore.Application.CustomerOperations.Commands.CreateToken
 
     public Token Handle()
     {
-      Customer customer = _dbContext.Customers.FirstOrDefault(customer => customer.Email == Model.Email && customer.Password == Model.Password);
-      if (customer is not null)
+      Customer customer = _dbContext.Customers.FirstOrDefault(customer => customer.Email == Model.Email);
+
+      if (customer is not null && BCrypt.Net.BCrypt.Verify(Model.Password, customer.Password))
       {
         TokenHandler handler = new TokenHandler(_configuration);
         Token token = handler.CreateAccessToken(customer);
