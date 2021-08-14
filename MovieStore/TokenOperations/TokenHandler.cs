@@ -31,7 +31,7 @@ namespace MovieStore.TokenOperations
         expires: tokenModel.ExpirationDate,
         notBefore: DateTime.Now,
         signingCredentials: signingCredentials,
-        claims: new [] { new Claim("customerId", customer.Id.ToString()) }
+        claims: new[] { new Claim("customerId", customer.Id.ToString()) }
       );
 
       JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();

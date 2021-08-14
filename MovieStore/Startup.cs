@@ -56,6 +56,7 @@ namespace MovieStore
       });
 
       services.AddDbContext<MovieStoreDbContext>(options => options.UseInMemoryDatabase(databaseName: "BookStoreDB"));
+      services.AddHttpContextAccessor();
       services.AddScoped<IMovieStoreDbContext>(provider => provider.GetService<MovieStoreDbContext>());
       services.AddAutoMapper(Assembly.GetExecutingAssembly());
       services.AddSingleton<ILoggerService, ConsoleLogger>();

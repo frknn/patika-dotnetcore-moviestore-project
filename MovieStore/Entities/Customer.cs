@@ -15,5 +15,10 @@ namespace MovieStore.Entities
     public string RefreshToken { get; set; }
     public DateTime? RefreshTokenExpireDate { get; set; }
     public List<Order> Orders { get; set; }
+
+    internal Customer Include()
+    {
+      throw new NotImplementedException();
+    }
   }
 }

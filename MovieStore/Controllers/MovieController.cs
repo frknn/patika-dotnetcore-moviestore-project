@@ -2,8 +2,10 @@ using System.Collections.Generic;
 using AutoMapper;
 using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MovieStore.Application.BookOperations.Queries.GetBookById;
+using MovieStore.Application.MovieOperations.Commands.BuyMovie;
 using MovieStore.Application.MovieOperations.Commands.CreateMovie;
 using MovieStore.Application.MovieOperations.Commands.DeleteMovie;
 using MovieStore.Application.MovieOperations.Commands.UpdateMovie;
@@ -20,10 +22,13 @@ namespace MovieStore.Controllers
     private readonly IMovieStoreDbContext _context;
     private readonly IMapper _mapper;
 
-    public MovieController(IMovieStoreDbContext context, IMapper mapper)
+    private readonly IHttpContextAccessor _httpContextAccessor;
+
+    public MovieController(IMovieStoreDbContext context, IMapper mapper, IHttpContextAccessor httpContextAccessor)
     {
       _context = context;
       _mapper = mapper;
+      _httpContextAccessor = httpContextAccessor;
     }
 
     [HttpGet]
@@ -55,6 +60,21 @@ namespace MovieStore.Controllers
       command.Model = newMovie;
 
       CreateMovieCommandValidator validator = new CreateMovieCommandValidator();
+      validator.ValidateAndThrow(command);
+
+      command.Handle();
+
+      return Ok();
+    }
+
+    [Authorize]
+    [HttpPost("{id}")]
+    public IActionResult BuyMovie(int id)
+    {
+      BuyMovieCommand command = new BuyMovieCommand(_context, _httpContextAccessor);
+      command.Id = id;
+
+      BuyMovieCommandValidator validator = new BuyMovieCommandValidator();
       validator.ValidateAndThrow(command);
 
       command.Handle();

@@ -48,6 +48,7 @@ namespace MovieStore.Middlewares
 
       string message = "[ERROR]    HTTP " + context.Request.Method + " - " + context.Response.StatusCode + " Error Message: " + ex.Message + " in " + watch.Elapsed.TotalMilliseconds + " ms.";
       _loggerService.Write(message);
+      _loggerService.Write(ex.ToString());
 
       var result = JsonConvert.SerializeObject(new { error = ex.Message }, Formatting.None);
       return context.Response.WriteAsync(result);

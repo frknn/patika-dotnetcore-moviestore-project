@@ -1,5 +1,4 @@
 using FluentValidation;
-using MovieStore.Application.MovieOperations.Commands.DeleteMovie;
 
 namespace MovieStore.Application.MovieOperations.Commands.DeleteMovie
 {
