@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MovieStore.Entities
@@ -13,5 +14,6 @@ namespace MovieStore.Entities
     public string Password { get; set; }
     public string RefreshToken { get; set; }
     public DateTime? RefreshTokenExpireDate { get; set; }
+    public List<Order> Orders { get; set; }
   }
 }

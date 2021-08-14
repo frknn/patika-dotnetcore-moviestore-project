@@ -1,6 +1,9 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
+using Microsoft.EntityFrameworkCore;
+using MovieStore.Application.ActorOperations.Queries.SharedViewModels;
 using MovieStore.DBOperations;
 using MovieStore.Entities;
 
@@ -20,7 +23,7 @@ namespace MovieStore.Application.ActorOperations.Queries.GetActorById
 
     public GetActorByIdViewModel Handle()
     {
-      Actor actor = _dbContext.Actors.Where(actor => actor.Id == Id).SingleOrDefault();
+      Actor actor = _dbContext.Actors.Where(actor => actor.Id == Id).Include(actor => actor.Movies.Where(movie => movie.isActive)).ThenInclude(movie => movie.Director).SingleOrDefault();
       if (actor is null)
       {
         throw new InvalidOperationException("Oyuncu bulunamadı.");
@@ -34,5 +37,6 @@ namespace MovieStore.Application.ActorOperations.Queries.GetActorById
   {
     public string FirstName { get; set; }
     public string LastName { get; set; }
+    public List<ActedInMovieViewModel> Movies { get; set; }
   }
 }

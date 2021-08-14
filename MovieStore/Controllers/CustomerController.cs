@@ -6,6 +6,8 @@ using MovieStore.TokenOperations.Models;
 using MovieStore.Application.CustomerOperations.Commands.RefreshToken;
 using MovieStore.Application.CustomerOperations.Commands.CreateToken;
 using MovieStore.Application.CustomerOperations.Commands.CreateCustomer;
+using MovieStore.Application.CustomerOperations.Queries.GetCustomerById;
+using FluentValidation;
 
 namespace MovieStore.Controllers
 {
@@ -51,6 +53,20 @@ namespace MovieStore.Controllers
       command.RefreshToken = token;
       Token resultAccessToken = command.Handle();
       return resultAccessToken;
+    }
+
+    [HttpGet("{id}")]
+    public IActionResult GetCustomerById(int id)
+    {
+      GetCustomerByIdQuery query = new GetCustomerByIdQuery(_context, _mapper);
+      query.Id = id;
+
+      GetCustomerByIdQueryValidator validator = new GetCustomerByIdQueryValidator();
+      validator.ValidateAndThrow(query);
+
+      GetCustomerByIdViewModel result = query.Handle();
+
+      return Ok(result);
     }
 
   }

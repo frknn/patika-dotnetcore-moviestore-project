@@ -1,6 +1,9 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
+using Microsoft.EntityFrameworkCore;
+using MovieStore.Application.DirectorOperations.Queries.SharedViewModels;
 using MovieStore.DBOperations;
 using MovieStore.Entities;
 
@@ -20,7 +23,7 @@ namespace MovieStore.Application.DirectorOperations.Queries.GetDirectorById
 
     public GetDirectorByIdViewModel Handle()
     {
-      Director director = _dbContext.Directors.Where(director => director.Id == Id).SingleOrDefault();
+      Director director = _dbContext.Directors.Where(director => director.Id == Id).Include(director => director.DirectedMovies.Where(movie => movie.isActive)).ThenInclude(movie => movie.Director).SingleOrDefault();
       if (director is null)
       {
         throw new InvalidOperationException("Yönetmen bulunamadı.");
@@ -34,5 +37,7 @@ namespace MovieStore.Application.DirectorOperations.Queries.GetDirectorById
   {
     public string FirstName { get; set; }
     public string LastName { get; set; }
+    public List<DirectedMovieViewModel> Movies { get; set; }
   }
+  
 }

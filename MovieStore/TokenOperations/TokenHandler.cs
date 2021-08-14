@@ -5,6 +5,7 @@ using MovieStore.Entities;
 using MovieStore.TokenOperations.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using System.Security.Claims;
 
 namespace MovieStore.TokenOperations
 {
@@ -29,7 +30,8 @@ namespace MovieStore.TokenOperations
         audience: Configuration["Token:Audience"],
         expires: tokenModel.ExpirationDate,
         notBefore: DateTime.Now,
-        signingCredentials: signingCredentials
+        signingCredentials: signingCredentials,
+        claims: new [] { new Claim("customerId", customer.Id.ToString()) }
       );
 
       JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();

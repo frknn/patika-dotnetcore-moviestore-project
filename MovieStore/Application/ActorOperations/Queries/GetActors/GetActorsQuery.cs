@@ -1,7 +1,9 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using MovieStore.Application.ActorOperations.Queries.SharedViewModels;
 using MovieStore.DBOperations;
 using MovieStore.Entities;
 
@@ -20,8 +22,21 @@ namespace MovieStore.Application.ActorOperations.Queries.GetActors
 
     public List<ActorsViewModel> Handle()
     {
-      List<Actor> actors = _dbContext.Actors.Include(actor => actor.Movies).ThenInclude(movie => movie.Director).OrderBy(actor => actor.Id).ToList<Actor>();
+      List<Actor> actors = _dbContext.Actors.Include(actor => actor.Movies.Where(movie => movie.isActive)).ThenInclude(movie => movie.Director).OrderBy(actor => actor.Id).ToList<Actor>();
       List<ActorsViewModel> actorsVM = _mapper.Map<List<ActorsViewModel>>(actors);
+
+      // var customers = _dbContext.Customers.OrderBy(customer => customer.Id).Include(customer => customer.Orders);
+      // foreach (var customer in customers)
+      // {
+      //   Console.WriteLine("Customer First Name: " + customer.FirstName);
+      //   Console.WriteLine("Customer Last Name: " + customer.LastName);
+      //   foreach (var order in customer.Orders)
+      //   {
+      //     Console.WriteLine("Order Movie Id: " + order.MovieId);
+      //     Console.WriteLine("Order Price: " + order.Price);
+      //     Console.WriteLine("Order Date: " + order.ProcessDate);
+      //   }
+      // }
       return actorsVM;
     }
   }
@@ -33,11 +48,4 @@ namespace MovieStore.Application.ActorOperations.Queries.GetActors
     public List<ActedInMovieViewModel> Movies { get; set; }
   }
 
-  public class ActedInMovieViewModel
-  {
-    public string Name { get; set; }
-    public int ReleaseYear { get; set; }
-    public string Genre { get; set; }
-    public string Director { get; set; }
-  }
 }
