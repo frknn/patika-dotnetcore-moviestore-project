@@ -23,11 +23,18 @@ namespace MovieStore.Application.DirectorOperations.Queries.GetDirectorById
 
     public GetDirectorByIdViewModel Handle()
     {
-      Director director = _dbContext.Directors.Where(director => director.Id == Id).Include(director => director.DirectedMovies.Where(movie => movie.isActive)).ThenInclude(movie => movie.Director).SingleOrDefault();
+      Director director = _dbContext.Directors.Where(director => director.Id == Id)
+        .Include(director => director.DirectedMovies.Where(movie => movie.isActive))
+          .ThenInclude(movie => movie.Director)
+        .Include(director => director.DirectedMovies.Where(movie => movie.isActive))
+          .ThenInclude(movie => movie.Genre)
+        .SingleOrDefault();
+        
       if (director is null)
       {
         throw new InvalidOperationException("Yönetmen bulunamadı.");
       }
+
       GetDirectorByIdViewModel directorVM = _mapper.Map<GetDirectorByIdViewModel>(director);
       return directorVM;
     }
@@ -37,7 +44,7 @@ namespace MovieStore.Application.DirectorOperations.Queries.GetDirectorById
   {
     public string FirstName { get; set; }
     public string LastName { get; set; }
-    public List<DirectedMovieViewModel> Movies { get; set; }
+    public List<DirectedMovieViewModel> DirectedMovies { get; set; }
   }
-  
+
 }

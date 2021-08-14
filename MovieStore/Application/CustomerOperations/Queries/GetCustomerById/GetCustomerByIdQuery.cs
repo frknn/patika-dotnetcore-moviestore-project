@@ -22,7 +22,7 @@ namespace MovieStore.Application.CustomerOperations.Queries.GetCustomerById
 
     public GetCustomerByIdViewModel Handle()
     {
-      Customer customer = _dbContext.Customers.Where(customer => customer.Id == Id).Include(customer => customer.Orders).ThenInclude(order => order.Movie).SingleOrDefault();
+      Customer customer = _dbContext.Customers.Where(customer => customer.Id == Id).Include(customer => customer.FavoriteGenres).Include(customer => customer.Orders).ThenInclude(order => order.Movie).SingleOrDefault();
       if (customer is null)
       {
         throw new InvalidOperationException("Müşteri bulunamadı.");
@@ -37,6 +37,7 @@ namespace MovieStore.Application.CustomerOperations.Queries.GetCustomerById
     public string FirstName { get; set; }
     public string LastName { get; set; }
     public List<OrderViewModel> Orders { get; set; }
+    public List<GenreViewModel> FavoriteGenres { get; set; }
   }
 
   public class OrderViewModel
@@ -44,5 +45,10 @@ namespace MovieStore.Application.CustomerOperations.Queries.GetCustomerById
     public string Movie { get; set; }
     public int Price { get; set; }
     public DateTime ProcessDate { get; set; }
+  }
+
+  public class GenreViewModel
+  {
+    public string Name { get; set; }
   }
 }

@@ -21,7 +21,7 @@ namespace MovieStore.Application.DirectorOperations.Queries.GetDirectors
 
     public List<DirectorsViewModel> Handle()
     {
-      List<Director> directors = _dbContext.Directors.Include(director => director.DirectedMovies.Where(movie => movie.isActive)).OrderBy(director => director.Id).ToList<Director>();
+      List<Director> directors = _dbContext.Directors.Include(director => director.DirectedMovies.Where(movie => movie.isActive)).ThenInclude(movie => movie.Genre).OrderBy(director => director.Id).ToList<Director>();
       List<DirectorsViewModel> directorsVM = _mapper.Map<List<DirectorsViewModel>>(directors);
       return directorsVM;
     }
