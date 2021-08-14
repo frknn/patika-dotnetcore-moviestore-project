@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 using MovieStore.DBOperations;
 using MovieStore.Entities;
 
@@ -21,6 +22,13 @@ namespace MovieStore.Application.ActorOperations.Commands.DeleteActor
       if (actor is null)
       {
         throw new InvalidOperationException("Oyuncu bulunamadı.");
+      }
+
+      bool isPlayingInAnyMovie = _dbContext.Movies.Include(movie => movie.Actors).Any(movie => movie.isActive && movie.Actors.Any(a => a.Id == actor.Id));
+
+      if (isPlayingInAnyMovie)
+      {
+        throw new InvalidOperationException("Bu oyuncu bir filmde oynamaktadır, şu anda silinemez.");
       }
 
       _dbContext.Actors.Remove(actor);

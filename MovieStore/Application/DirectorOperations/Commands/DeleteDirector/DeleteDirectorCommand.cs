@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 using MovieStore.DBOperations;
 using MovieStore.Entities;
 
@@ -21,6 +22,12 @@ namespace MovieStore.Application.DirectorOperations.Commands.DeleteDirector
       if (director is null)
       {
         throw new InvalidOperationException("Yönetmen bulunamadı.");
+      }
+      bool isDirectingAnyMovie = _dbContext.Movies.Include(movie => movie.Director).Any(movie => movie.isActive && movie.Director.Id == director.Id);
+
+      if (isDirectingAnyMovie)
+      {
+        throw new InvalidOperationException("Bu yönetmen bir film yönetmektedir, şu anda silinemez.");
       }
 
       _dbContext.Directors.Remove(director);
