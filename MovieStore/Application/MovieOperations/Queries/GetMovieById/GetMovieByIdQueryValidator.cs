@@ -1,7 +1,6 @@
 using FluentValidation;
-using MovieStore.Application.MovieOperations.Queries.GetMovieById;
 
-namespace MovieStore.Application.BookOperations.Queries.GetBookById
+namespace MovieStore.Application.MovieOperations.Queries.GetMovieById
 {
   public class GetMovieByIdQueryValidator : AbstractValidator<GetMovieByIdQuery>
   {

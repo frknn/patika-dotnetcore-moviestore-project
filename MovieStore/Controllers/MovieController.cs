@@ -4,7 +4,6 @@ using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using MovieStore.Application.BookOperations.Queries.GetBookById;
 using MovieStore.Application.MovieOperations.Commands.AddActor;
 using MovieStore.Application.MovieOperations.Commands.BuyMovie;
 using MovieStore.Application.MovieOperations.Commands.CreateMovie;
