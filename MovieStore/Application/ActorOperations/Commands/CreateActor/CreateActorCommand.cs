@@ -20,7 +20,7 @@ namespace MovieStore.Application.ActorOperations.Commands.CreateActor
 
     public void Handle()
     {
-      Actor actor = _dbContext.Actors.SingleOrDefault(actor => (actor.FirstName == Model.FirstName && actor.LastName == Model.LastName));
+      Actor actor = _dbContext.Actors.SingleOrDefault(actor => (actor.FirstName.ToLower() == Model.FirstName.ToLower() && actor.LastName.ToLower() == Model.LastName.ToLower()));
       if (actor is not null)
       {
         throw new InvalidOperationException("Oyuncu zaten mevcut.");
