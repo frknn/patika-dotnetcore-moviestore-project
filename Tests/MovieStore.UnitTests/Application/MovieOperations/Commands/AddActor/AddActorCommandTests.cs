@@ -55,8 +55,8 @@ namespace Application.MovieOperations.Commands.AddActor
     {
       // Arrange
       AddActorCommand command = new AddActorCommand(_dbContext);
-      command.Id = 1;
-      command.Model = new AddActorModel() { ActorId = 1 };
+      command.Id = 3;
+      command.Model = new AddActorModel() { ActorId = 3 };
 
       // Act & Assert
       FluentActions
@@ -67,7 +67,7 @@ namespace Application.MovieOperations.Commands.AddActor
     }
 
     [Fact]
-    public void WhenValidInputsAreGivenMovie_Handle_ThrowsInvalidOperationException()
+    public void WhenValidInputsAreGivenMovie_Actor_ShouldBeAddedToTheMovie()
     {
       // Arrange
       AddActorCommand command = new AddActorCommand(_dbContext);

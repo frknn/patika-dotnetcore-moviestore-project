@@ -1,5 +1,8 @@
+using System.Linq;
 using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Moq;
 using MovieStore.Common;
 using MovieStore.DBOperations;
 
@@ -9,7 +12,6 @@ namespace TestSetup
   {
     public MovieStoreDbContext Context { get; set; }
     public IMapper Mapper { get; set; }
-
     public CommonTestFixture()
     {
       var options = new DbContextOptionsBuilder<MovieStoreDbContext>().UseInMemoryDatabase(databaseName: "MovieStoreTestDB").Options;
