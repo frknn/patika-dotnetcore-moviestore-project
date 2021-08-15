@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using MovieStore.Application.CustomerOperations.Queries.SharedViewModels;
 using MovieStore.DBOperations;
 using MovieStore.Entities;
 
@@ -40,15 +41,4 @@ namespace MovieStore.Application.CustomerOperations.Queries.GetCustomerById
     public List<GenreViewModel> FavoriteGenres { get; set; }
   }
 
-  public class OrderViewModel
-  {
-    public string Movie { get; set; }
-    public int Price { get; set; }
-    public DateTime ProcessDate { get; set; }
-  }
-
-  public class GenreViewModel
-  {
-    public string Name { get; set; }
-  }
 }

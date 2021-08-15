@@ -5,6 +5,8 @@ using MovieStore.Application.ActorOperations.Queries.GetActors;
 using MovieStore.Application.ActorOperations.Queries.SharedViewModels;
 using MovieStore.Application.CustomerOperations.Commands.CreateCustomer;
 using MovieStore.Application.CustomerOperations.Queries.GetCustomerById;
+using MovieStore.Application.CustomerOperations.Queries.GetCustomers;
+using MovieStore.Application.CustomerOperations.Queries.SharedViewModels;
 using MovieStore.Application.DirectorOperations.Commands.CreateDirector;
 using MovieStore.Application.DirectorOperations.Queries.GetDirectorById;
 using MovieStore.Application.DirectorOperations.Queries.GetDirectors;
@@ -51,6 +53,7 @@ namespace MovieStore.Common
       CreateMap<Order, OrderViewModel>().ForMember(dest => dest.Movie, opt => opt.MapFrom(src => src.Movie.Name));
 
       CreateMap<Genre, GenreViewModel>();
+      CreateMap<Customer, CustomerViewModel>();
     }
   }
 }

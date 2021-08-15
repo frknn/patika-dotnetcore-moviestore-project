@@ -8,6 +8,11 @@ using MovieStore.Application.CustomerOperations.Commands.CreateToken;
 using MovieStore.Application.CustomerOperations.Commands.CreateCustomer;
 using MovieStore.Application.CustomerOperations.Queries.GetCustomerById;
 using FluentValidation;
+using Microsoft.AspNetCore.Http;
+using MovieStore.Application.CustomerOperations.Commands.DeleteCustomer;
+using Microsoft.AspNetCore.Authorization;
+using System.Collections.Generic;
+using MovieStore.Application.CustomerOperations.Queries.GetCustomers;
 
 namespace MovieStore.Controllers
 {
@@ -18,12 +23,14 @@ namespace MovieStore.Controllers
     private readonly IMovieStoreDbContext _context;
     private readonly IMapper _mapper;
     private readonly IConfiguration _configuration;
+    private readonly IHttpContextAccessor _httpContextAccessor;
 
-    public CustomerController(IMovieStoreDbContext context, IMapper mapper, IConfiguration configuration)
+    public CustomerController(IMovieStoreDbContext context, IMapper mapper, IConfiguration configuration, IHttpContextAccessor httpContextAccessor)
     {
       _context = context;
       _mapper = mapper;
       _configuration = configuration;
+      _httpContextAccessor = httpContextAccessor;
     }
 
     [HttpPost]
@@ -55,6 +62,14 @@ namespace MovieStore.Controllers
       return resultAccessToken;
     }
 
+    [HttpGet]
+    public IActionResult GetCustomers()
+    {
+      GetCustomersQuery query = new GetCustomersQuery(_context, _mapper);
+      List<CustomerViewModel> result = query.Handle();
+      return Ok(result);
+    }
+
     [HttpGet("{id}")]
     public IActionResult GetCustomerById(int id)
     {
@@ -69,5 +84,19 @@ namespace MovieStore.Controllers
       return Ok(result);
     }
 
+    [Authorize]
+    [HttpDelete("{id}")]
+    public IActionResult DeleteCustomer(int id)
+    {
+      DeleteCustomerCommand command = new DeleteCustomerCommand(_context, _httpContextAccessor);
+      command.Id = id;
+
+      DeleteCustomerCommandValidator validator = new DeleteCustomerCommandValidator();
+      validator.ValidateAndThrow(command);
+
+      command.Handle();
+
+      return Ok();
+    }
   }
 }

@@ -21,7 +21,6 @@ namespace MovieStore.Controllers
   {
     private readonly IMovieStoreDbContext _context;
     private readonly IMapper _mapper;
-
     private readonly IHttpContextAccessor _httpContextAccessor;
 
     public MovieController(IMovieStoreDbContext context, IMapper mapper, IHttpContextAccessor httpContextAccessor)
