@@ -34,6 +34,22 @@ namespace Application.ActorOperations.Commands.UpdateActor
     }
 
     [Fact]
+    public void WhenGivenActorNameAlreadyExistsWithDifferentId_Handle_ThrowsInvalidOperationException()
+    {
+      // Arrange
+      UpdateActorCommand command = new UpdateActorCommand(_context);
+      command.Id = 3;
+      command.Model = new UpdateActorModel() { FirstName = "Alison", LastName = "Brie" };
+
+      // Act & Assert
+      FluentActions
+        .Invoking(() => command.Handle())
+        .Should().Throw<InvalidOperationException>()
+        .And
+        .Message.Should().Be("Bu isimde bir oyuncu zaten var.");
+    }
+
+    [Fact]
     public void WhenDefaultInputsAreGiven_Actor_ShouldNotBeChanged()
     {
       // arrange
