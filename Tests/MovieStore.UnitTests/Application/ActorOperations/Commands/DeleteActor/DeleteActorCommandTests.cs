@@ -33,7 +33,7 @@ namespace Application.ActorOperations.Commands.DeleteActor
     }
 
     [Fact]
-    public void WhenGivenActorHasPublishedMovies_Handle_ThrowsInvalidOperationException()
+    public void WhenGivenActorIsCurrentlyPlayingInAMovie_Handle_ThrowsInvalidOperationException()
     {
       // arrange
       DeleteActorCommand command = new DeleteActorCommand(_context);

@@ -33,7 +33,7 @@ namespace Application.DirectorOperations.Commands.DeleteDirector
     }
 
     [Fact]
-    public void WhenGivenDirectorHasPublishedMovies_Handle_ThrowsInvalidOperationException()
+    public void WhenGivenDirectorIsDirectingAMovie_Handle_ThrowsInvalidOperationException()
     {
       // arrange
       DeleteDirectorCommand command = new DeleteDirectorCommand(_context);
