@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MovieStore.Application.BookOperations.Queries.GetBookById;
+using MovieStore.Application.MovieOperations.Commands.AddActor;
 using MovieStore.Application.MovieOperations.Commands.BuyMovie;
 using MovieStore.Application.MovieOperations.Commands.CreateMovie;
 using MovieStore.Application.MovieOperations.Commands.DeleteMovie;
@@ -74,6 +75,21 @@ namespace MovieStore.Controllers
       command.Id = id;
 
       BuyMovieCommandValidator validator = new BuyMovieCommandValidator();
+      validator.ValidateAndThrow(command);
+
+      command.Handle();
+
+      return Ok();
+    }
+
+    [HttpPost("{id}/actors")]
+    public IActionResult AddActor(int id, [FromBody] AddActorModel model)
+    {
+      AddActorCommand command = new AddActorCommand(_context);
+      command.Id = id;
+      command.Model = model;
+
+      AddActorCommandValidator validator = new AddActorCommandValidator();
       validator.ValidateAndThrow(command);
 
       command.Handle();

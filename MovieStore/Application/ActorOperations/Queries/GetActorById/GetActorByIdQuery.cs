@@ -23,7 +23,13 @@ namespace MovieStore.Application.ActorOperations.Queries.GetActorById
 
     public GetActorByIdViewModel Handle()
     {
-      Actor actor = _dbContext.Actors.Where(actor => actor.Id == Id).Include(actor => actor.Movies.Where(movie => movie.isActive)).ThenInclude(movie => movie.Director).SingleOrDefault();
+      Actor actor = _dbContext.Actors.Where(actor => actor.Id == Id)
+      .Include(actor => actor.Movies.Where(movie => movie.isActive))
+        .ThenInclude(movie => movie.Director)
+      .Include(actor => actor.Movies.Where(movie => movie.isActive))
+        .ThenInclude(movie => movie.Genre)
+      .SingleOrDefault();
+
       if (actor is null)
       {
         throw new InvalidOperationException("Oyuncu bulunamadı.");

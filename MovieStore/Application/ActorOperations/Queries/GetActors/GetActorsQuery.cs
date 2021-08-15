@@ -22,7 +22,14 @@ namespace MovieStore.Application.ActorOperations.Queries.GetActors
 
     public List<ActorsViewModel> Handle()
     {
-      List<Actor> actors = _dbContext.Actors.Include(actor => actor.Movies.Where(movie => movie.isActive)).ThenInclude(movie => movie.Director).OrderBy(actor => actor.Id).ToList<Actor>();
+      List<Actor> actors = _dbContext.Actors
+      .Include(actor => actor.Movies.Where(movie => movie.isActive))
+        .ThenInclude(movie => movie.Director)
+      .Include(actor => actor.Movies.Where(movie => movie.isActive))
+        .ThenInclude(movie => movie.Genre)
+      .OrderBy(actor => actor.Id)
+      .ToList<Actor>();
+      
       List<ActorsViewModel> actorsVM = _mapper.Map<List<ActorsViewModel>>(actors);
 
       return actorsVM;
