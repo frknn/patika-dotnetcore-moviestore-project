@@ -12,7 +12,7 @@ using MovieStore.Entities;
 using TestSetup;
 using Xunit;
 
-namespace Application.MovieOperations.Commands.BuyMovie
+namespace Application.MovieOperations.Commands.DeleteCustomer
 {
   public class DeleteCustomerCommandTests : IClassFixture<CommonTestFixture>
   {

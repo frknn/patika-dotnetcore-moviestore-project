@@ -83,16 +83,26 @@ namespace Application.MovieOperations.Commands.AddActor
     [Fact]
     public void WhenValidInputsAreGivenMovie_Actor_ShouldBeAddedToTheMovie()
     {
+      Actor actor = new Actor() { FirstName = "A New", LastName = "Actor To Test Add Actor" };
+      _dbContext.Actors.Add(actor);
+      _dbContext.SaveChanges();
+      Actor addedActor = _dbContext.Actors.Include(actor => actor.Movies).SingleOrDefault(a => a.FirstName.ToLower() == actor.FirstName.ToLower() && a.LastName.ToLower() == actor.LastName.ToLower());
+
+      Movie movie = new Movie() { Name = "A New Movie To Test Add Actor", Price = 15, ReleaseYear = 2000, GenreId = 1, DirectorId = 1 };
+      _dbContext.Movies.Add(movie);
+      _dbContext.SaveChanges();
+      Movie addedMovie = _dbContext.Movies.SingleOrDefault(m => m.Name.ToLower() == movie.Name.ToLower());
+
       // Arrange
       AddActorCommand command = new AddActorCommand(_dbContext);
-      command.Id = 1;
-      command.Model = new AddActorModel() { ActorId = 3 };
+      command.Id = addedMovie.Id;
+      command.Model = new AddActorModel() { ActorId = addedActor.Id };
 
       // Act
       FluentActions.Invoking(() => command.Handle()).Invoke();
 
       // Assert
-      Movie movie = _dbContext.Movies.Include(movie => movie.Actors).SingleOrDefault(movie => movie.Id == command.Id);
+      Movie movieToTest = _dbContext.Movies.Include(movie => movie.Actors).SingleOrDefault(movie => movie.Id == command.Id);
       bool hasNewActor = movie.Actors.Any(actor => actor.Id == command.Model.ActorId);
       hasNewActor.Should().BeTrue();
 
