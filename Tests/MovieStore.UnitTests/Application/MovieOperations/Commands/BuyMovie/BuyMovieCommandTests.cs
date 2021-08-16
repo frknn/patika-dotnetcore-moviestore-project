@@ -43,6 +43,32 @@ namespace Application.MovieOperations.Commands.BuyMovie
     }
 
     [Fact]
+    public void WhenGivenMovieIsNotActive_Handle_ThrowsInvalidOperationException()
+    {
+      var mockHttpContextAccessor = new Mock<IHttpContextAccessor>();
+      var claims = new List<Claim>()
+      {
+          new Claim("customerId", "1")
+      };
+
+      mockHttpContextAccessor.Setup(accessor => accessor.HttpContext.User.Claims).Returns(claims);
+      Movie newMovieToTestNotActive = new Movie() { Name = "test name 12145445124124", ReleaseYear = 2000, Price = 15, GenreId = 4, DirectorId = 1, isActive = false };
+      _dbContext.Movies.Add(newMovieToTestNotActive);
+      _dbContext.SaveChanges();
+      Movie addedMovieToTestNotActive = _dbContext.Movies.SingleOrDefault(movie => movie.Name == newMovieToTestNotActive.Name);
+      // Arrange
+      BuyMovieCommand command = new BuyMovieCommand(_dbContext, mockHttpContextAccessor.Object);
+      command.Id = addedMovieToTestNotActive.Id;
+
+      // Act & Assert
+      FluentActions
+        .Invoking(() => command.Handle())
+        .Should().Throw<InvalidOperationException>()
+        .And
+        .Message.Should().Be("Film bulunamadı.");
+    }
+
+    [Fact]
     public void WhenValidInputsAreGiven_Movie_ShouldBeAddedToUsersMovies()
     {
       Customer customer = new Customer() { FirstName = "New", LastName = "Customer", Email = "newcustomer@example.com", Password = "newcustomer123" };

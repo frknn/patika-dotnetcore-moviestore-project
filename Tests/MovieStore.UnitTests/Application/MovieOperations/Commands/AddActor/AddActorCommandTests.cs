@@ -35,6 +35,26 @@ namespace Application.MovieOperations.Commands.AddActor
     }
 
     [Fact]
+    public void WhenGivenMovieIsNotActive_Handle_ThrowsInvalidOperationException()
+    {
+      Movie newMovieToTestNotActive = new Movie() { Name = "test name 12545545414124124", ReleaseYear = 2000, Price = 15, GenreId = 4, DirectorId = 1, isActive = false };
+      _dbContext.Movies.Add(newMovieToTestNotActive);
+      _dbContext.SaveChanges();
+      Movie addedMovieToTestNotActive = _dbContext.Movies.SingleOrDefault(movie => movie.Name == newMovieToTestNotActive.Name);
+      // Arrange
+      AddActorCommand command = new AddActorCommand(_dbContext);
+      command.Id = addedMovieToTestNotActive.Id;
+      command.Model = new AddActorModel() { ActorId = 3 };
+
+      // Act & Assert
+      FluentActions
+        .Invoking(() => command.Handle())
+        .Should().Throw<InvalidOperationException>()
+        .And
+        .Message.Should().Be("Film bulunamadı.");
+    }
+
+    [Fact]
     public void WhenGivenActorIsNotFound_Handle_ThrowsInvalidOperationException()
     {
       // Arrange

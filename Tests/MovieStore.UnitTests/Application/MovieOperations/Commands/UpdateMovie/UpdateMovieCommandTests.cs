@@ -34,6 +34,26 @@ namespace Application.MovieOperations.Commands.UpdateMovie
     }
 
     [Fact]
+    public void WhenGivenMovieIsNotActive_Handle_ThrowsInvalidOperationException()
+    {
+      Movie newMovieToTestNotActive = new Movie() { Name = "test name 1214124124", ReleaseYear = 2000, Price = 15, GenreId = 4, DirectorId = 1, isActive = false };
+      _context.Movies.Add(newMovieToTestNotActive);
+      _context.SaveChanges();
+      Movie addedMovieToTestNotActive = _context.Movies.SingleOrDefault(movie => movie.Name == newMovieToTestNotActive.Name);
+      // Arrange
+      UpdateMovieCommand command = new UpdateMovieCommand(_context);
+      command.Id = addedMovieToTestNotActive.Id;
+      command.Model = new UpdateMovieModel() { Name = "Updated Movie" };
+
+      // Act & Assert
+      FluentActions
+        .Invoking(() => command.Handle())
+        .Should().Throw<InvalidOperationException>()
+        .And
+        .Message.Should().Be("Film bulunamadı.");
+    }
+
+    [Fact]
     public void WhenGivenMovieNameAlreadyExistsWithDifferentId_Handle_ThrowsInvalidOperationException()
     {
       // Arrange

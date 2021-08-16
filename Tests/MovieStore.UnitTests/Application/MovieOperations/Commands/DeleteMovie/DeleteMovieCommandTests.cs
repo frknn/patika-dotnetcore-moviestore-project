@@ -33,6 +33,25 @@ namespace Application.MovieOperations.Commands.DeleteMovie
     }
 
     [Fact]
+    public void WhenGivenMovieIsNotActive_Handle_ThrowsInvalidOperationException()
+    {
+      Movie newMovieToTestNotActive = new Movie() { Name = "test name 12346614124124", ReleaseYear = 2000, Price = 15, GenreId = 4, DirectorId = 1, isActive = false };
+      _context.Movies.Add(newMovieToTestNotActive);
+      _context.SaveChanges();
+      Movie addedMovieToTestNotActive = _context.Movies.SingleOrDefault(movie => movie.Name == newMovieToTestNotActive.Name);
+      // Arrange
+      DeleteMovieCommand command = new DeleteMovieCommand(_context);
+      command.Id = addedMovieToTestNotActive.Id;
+
+      // Act & Assert
+      FluentActions
+        .Invoking(() => command.Handle())
+        .Should().Throw<InvalidOperationException>()
+        .And
+        .Message.Should().Be("Film bulunamadı.");
+    }
+
+    [Fact]
     public void WhenValidInputsAreGiven_Movie_ShouldBeDeleted()
     {
       // arrange
