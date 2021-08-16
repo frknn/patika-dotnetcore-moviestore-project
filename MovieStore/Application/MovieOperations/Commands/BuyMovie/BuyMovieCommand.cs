@@ -21,7 +21,7 @@ namespace MovieStore.Application.MovieOperations.Commands.BuyMovie
 
     public void Handle()
     {
-      Movie movie = _dbContext.Movies.SingleOrDefault(movie => movie.Id == Id);
+      Movie movie = _dbContext.Movies.SingleOrDefault(movie => movie.Id == Id && movie.isActive);
       if (movie is null)
       {
         throw new InvalidOperationException("Film bulunamadı.");

@@ -19,7 +19,7 @@ namespace MovieStore.Application.MovieOperations.Commands.AddActor
 
     public void Handle()
     {
-      Movie movie = _dbContext.Movies.Include(movie => movie.Actors).SingleOrDefault(movie => movie.Id == Id);
+      Movie movie = _dbContext.Movies.Include(movie => movie.Actors).SingleOrDefault(movie => movie.Id == Id && movie.isActive);
       if (movie is null)
       {
         throw new InvalidOperationException("Film bulunamadı.");
