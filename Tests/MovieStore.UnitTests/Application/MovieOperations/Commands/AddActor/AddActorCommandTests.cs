@@ -54,9 +54,23 @@ namespace Application.MovieOperations.Commands.AddActor
     public void WhenGivenActorIsAlreadyPlayingInGivenMovie_Handle_ThrowsInvalidOperationException()
     {
       // Arrange
+
+      Actor actor = new Actor() { FirstName = "A New", LastName = "Actor To Test" };
+      _dbContext.Actors.Add(actor);
+      _dbContext.SaveChanges();
+      Actor addedActor = _dbContext.Actors.Include(actor => actor.Movies).SingleOrDefault(a => a.FirstName.ToLower() == actor.FirstName.ToLower() && a.LastName.ToLower() == actor.LastName.ToLower());
+
+      Movie movie = new Movie() { Name = "A New Movie To Test", Price = 15, ReleaseYear = 2000, GenreId = 1, DirectorId = 1 };
+      _dbContext.Movies.Add(movie);
+      _dbContext.SaveChanges();
+      Movie addedMovie = _dbContext.Movies.SingleOrDefault(m => m.Name.ToLower() == movie.Name.ToLower());
+
+      addedActor.Movies.Add(addedMovie);
+      _dbContext.SaveChanges();
+
       AddActorCommand command = new AddActorCommand(_dbContext);
-      command.Id = 3;
-      command.Model = new AddActorModel() { ActorId = 3 };
+      command.Id = addedMovie.Id;
+      command.Model = new AddActorModel() { ActorId = addedActor.Id };
 
       // Act & Assert
       FluentActions
@@ -79,7 +93,7 @@ namespace Application.MovieOperations.Commands.AddActor
 
       // Assert
       Movie movie = _dbContext.Movies.Include(movie => movie.Actors).SingleOrDefault(movie => movie.Id == command.Id);
-      bool hasNewActor = movie.Actors.Any(actor => actor.Id == command.Model.ActorId); 
+      bool hasNewActor = movie.Actors.Any(actor => actor.Id == command.Model.ActorId);
       hasNewActor.Should().BeTrue();
 
     }
