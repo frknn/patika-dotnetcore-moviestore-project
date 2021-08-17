@@ -16,10 +16,5 @@ namespace MovieStore.Entities
     public DateTime? RefreshTokenExpireDate { get; set; }
     public List<Order> Orders { get; set; }
     public List<Genre> FavoriteGenres { get; set; }
-
-    internal Customer Include()
-    {
-      throw new NotImplementedException();
-    }
   }
 }
