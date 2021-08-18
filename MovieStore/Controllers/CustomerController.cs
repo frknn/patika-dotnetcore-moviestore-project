@@ -38,6 +38,10 @@ namespace MovieStore.Controllers
     {
       CreateCustomerCommand command = new CreateCustomerCommand(_context, _mapper);
       command.Model = newCustomer;
+
+      CreateCustomerCommandValidator validator = new CreateCustomerCommandValidator();
+      validator.ValidateAndThrow(command);
+
       command.Handle();
 
       return Ok();
@@ -48,6 +52,10 @@ namespace MovieStore.Controllers
     {
       CreateTokenCommand command = new CreateTokenCommand(_context, _configuration);
       command.Model = loginInfo;
+
+      CreateTokenCommandValidator validator = new CreateTokenCommandValidator();
+      validator.ValidateAndThrow(command);
+
       Token token = command.Handle();
 
       return token;
