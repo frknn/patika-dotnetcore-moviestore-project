@@ -46,9 +46,9 @@ namespace Application.CustomerOperations.Queries.GetCustomerById
       FluentActions.Invoking(() => query.Handle()).Invoke();
 
       // assert
-      Customer movie = _context.Customers.SingleOrDefault(movie => movie.Id == query.Id);
+      Customer customer = _context.Customers.SingleOrDefault(customer => customer.Id == query.Id);
 
-      movie.Should().NotBeNull();
+      customer.Should().NotBeNull();
     }
   }
 }
